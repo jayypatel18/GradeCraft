@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { stringify, parse } from 'flatted';
 
 const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
   const [courseName, setCourseName] = useState('');
@@ -36,17 +37,45 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
     onCalculate(gradeResults);
   };
 
-  const handleSave = () => {
-    const resultData = {
-      courseName,
-      ct: parseFloat(ct) || 0,
-      se: parseFloat(se) || 0,
-      as: parseFloat(as) || 0,
-      ru: parseFloat(ru) || 0,
-      lpw: parseFloat(lpw) || 0,
-      hasLPW,
-    };
-    onSave(resultData);
+  const handleSave = async (resultData) => {
+    try {
+      // Create a clean, serializable object
+      const saveData = {
+        courseName: resultData.courseName,
+        ct: resultData.ct,
+        se: resultData.se,
+        as: resultData.as,
+        ru: resultData.ru || null,
+        lpw: resultData.lpw || null,
+        hasLPW: resultData.hasLPW || false
+      };
+
+      const serialized = stringify(saveData);
+     const deserialized = parse(serialized);
+  
+      const res = await fetch('/api/results/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(deserialized),
+        credentials: 'include',
+      });
+  
+      if (!res.ok) {
+        throw new Error(await res.text());
+      }
+  
+      const data = await res.json();
+      if (data.success) {
+        fetchResults(); // Refresh the list
+        // Optional: Show success message
+        alert('Results saved successfully!');
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+      alert(`Failed to save: ${error.message}`);
+    }
   };
 
   const loadSavedResult = (result) => {

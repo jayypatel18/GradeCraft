@@ -1,6 +1,6 @@
+import { getSession } from 'next-auth/react';
 import dbConnect from '../../../utils/dbConnect';
 import Result from '../../../models/Result';
-import { getSession } from 'next-auth/react';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -8,7 +8,6 @@ export default async function handler(req, res) {
   }
 
   const session = await getSession({ req });
-
   if (!session) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
@@ -17,22 +16,32 @@ export default async function handler(req, res) {
 
   try {
     const { courseName, ct, se, as, ru, lpw, hasLPW } = req.body;
-
-    const result = new Result({
+    
+    const result = await Result.create({
       user: session.user.id,
       courseName,
-      ct,
-      se,
-      as,
-      ru,
-      lpw,
-      hasLPW,
+      ct: parseFloat(ct),
+      se: parseFloat(se),
+      as: parseFloat(as),
+      ru: ru ? parseFloat(ru) : undefined,
+      lpw: lpw ? parseFloat(lpw) : undefined,
+      hasLPW: Boolean(hasLPW)
     });
 
-    await result.save();
-
-    res.status(201).json({ success: true, data: result });
+    res.status(201).json({ 
+      success: true, 
+      data: {
+        _id: result._id,
+        courseName: result.courseName,
+        // Include other fields you need
+      }
+    });
   } catch (error) {
-    res.status(400).json({ success: false, error: error.message });
+    console.error('Save error:', error);
+    res.status(400).json({ 
+      success: false, 
+      error: error.message,
+      message: 'Failed to save results'
+    });
   }
 }
