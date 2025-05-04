@@ -249,7 +249,7 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       {results && (
         <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
           <h3 className="text-base sm:text-lg font-semibold mb-2 text-gray-700">Required Final Exam Marks</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-1 gap-2 sm:gap-3">
             {Object.entries(results).map(([grade, value]) => (
               <div className="flex justify-between items-center" key={grade}>
                 <span className={`font-medium text-sm sm:text-base ${getGradeColor(grade)}`}>
