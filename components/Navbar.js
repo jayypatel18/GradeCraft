@@ -8,7 +8,7 @@ const Navbar = () => {
     <nav className="bg-indigo-700 text-white shadow-lg">
       <div className="container mx-auto px-6 py-3 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold">
-          Grade Calculator
+        GradeCraft
         </Link>
         <div className="flex items-center space-x-4">
           <Link href="/" className="hover:bg-indigo-600 px-3 py-2 rounded transition">

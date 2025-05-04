@@ -169,8 +169,8 @@ export default function Account() {
                         <div className="w-full">
                           <h3 className="font-semibold text-lg">{result.courseName}</h3>
                           <p className="text-gray-600 text-sm">
-                            CT: {result.ct} | SE: {result.se} | AS: {result.as}
-                            {result.hasLPW && ` | RU: ${result.ru} | LPW: ${result.lpw}`}
+                            ClassTest: {result.ct} | SessionalExaminations: {result.se} | Assignment: {result.as}
+                            {result.hasLPW && ` | Rubrics: ${result.ru} | LPW: ${result.lpw}`}
                           </p>
                           
                           {/* Required Final Exam Marks section */}

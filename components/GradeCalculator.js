@@ -231,13 +231,13 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
             {savedResults.map((result) => (
               <div
                 key={result._id}
-                onClick={() => loadSavedResult(result)}
+                // onClick={() => loadSavedResult(result)}
                 className={`p-3 border rounded-lg cursor-pointer hover:bg-gray-50 ${selectedResult === result._id ? 'bg-indigo-50 border-indigo-300' : ''}`}
               >
                 <div className="font-medium">{result.courseName}</div>
                 <div className="text-sm text-gray-500">
-                  CT: {result.ct}, SE: {result.se}, AS: {result.as}
-                  {result.hasLPW && `, RU: ${result.ru}, LPW: ${result.lpw}`}
+                  ClassTest: {result.ct}, SessionExamination: {result.se}, Assignment: {result.as}
+                  {result.hasLPW && `, Rubrics: ${result.ru}, LPW: ${result.lpw}`}
                 </div>
               </div>
             ))}
