@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/Navbar';
+import EditResultModal from '../../components/EditResultModal';
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
   const [allResults, setAllResults] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [currentResult, setCurrentResult] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -46,6 +49,41 @@ export default function AdminPage() {
       console.error('Error deleting result:', error);
     }
   };
+  
+  const openEditModal = (result) => {
+    setCurrentResult(result);
+    setIsEditModalOpen(true);
+  };
+  
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setCurrentResult(null);
+  };
+  
+  const handleEditSave = async (formData) => {
+    try {
+      const res = await fetch('/api/results/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      const data = await res.json();
+      
+      if (data.success) {
+        fetchAllResults();
+        closeEditModal();
+        alert('Result updated successfully!');
+      } else {
+        alert('Failed to update: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Update error:', error);
+      alert('Failed to update: ' + error.message);
+    }
+  };
 
   if (status === 'loading' || !session) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
@@ -75,12 +113,20 @@ export default function AdminPage() {
                       {result.hasLPW && ` | RU: ${result.ru} | LPW: ${result.lpw}`}
                     </p>
                   </div>
-                  <button
-                    onClick={() => handleDelete(result._id)}
-                    className="text-sm bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200"
-                  >
-                    Delete
-                  </button>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => openEditModal(result)}
+                      className="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(result._id)}
+                      className="text-sm bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -89,6 +135,14 @@ export default function AdminPage() {
           <p>No results found.</p>
         )}
       </div>
+      
+      {/* Edit Modal */}
+      <EditResultModal
+        result={currentResult}
+        isOpen={isEditModalOpen}
+        onClose={closeEditModal}
+        onSave={handleEditSave}
+      />
     </div>
   );
 }

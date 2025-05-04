@@ -1,10 +1,13 @@
 import { useSession, signOut } from 'next-auth/react';
 import Navbar from '../components/Navbar';
 import { useState, useEffect } from 'react';
+import EditResultModal from '../components/EditResultModal';
 
 export default function Account() {
   const { data: session } = useSession();
   const [savedResults, setSavedResults] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [currentResult, setCurrentResult] = useState(null);
   
   const gradeDisplayMapping = {
     APlus: 'A+',
@@ -50,6 +53,40 @@ export default function Account() {
     const data = await res.json();
     if (data.success) {
       fetchResults();
+    }
+  };
+  
+  const openEditModal = (result) => {
+    setCurrentResult(result);
+    setIsEditModalOpen(true);
+  };
+  
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setCurrentResult(null);
+  };
+  
+  const handleEditSave = async (formData) => {
+    try {
+      const res = await fetch('/api/results/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      const data = await res.json();
+      
+      if (data.success) {
+        fetchResults();
+        closeEditModal();
+      } else {
+        alert('Failed to update: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Update error:', error);
+      alert('Failed to update: ' + error.message);
     }
   };
   
@@ -156,12 +193,20 @@ export default function Account() {
                           </div>
                         </div>
                         
-                        <button
-                          onClick={() => deleteResult(result._id)}
-                          className="text-red-600 hover:text-red-800 ml-4"
-                        >
-                          Delete
-                        </button>
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => openEditModal(result)}
+                            className="text-blue-600 hover:text-blue-800"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => deleteResult(result._id)}
+                            className="text-red-600 hover:text-red-800"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
                     </div>
                   );
@@ -171,6 +216,14 @@ export default function Account() {
           </div>
         </div>
       </div>
+      
+      {/* Edit Modal */}
+      <EditResultModal
+        result={currentResult}
+        isOpen={isEditModalOpen}
+        onClose={closeEditModal}
+        onSave={handleEditSave}
+      />
     </div>
   );
 }

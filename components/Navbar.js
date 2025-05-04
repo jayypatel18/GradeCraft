@@ -20,7 +20,7 @@ const Navbar = () => {
           {session ? (
             <>
               <Link href="/account" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
-                My Account
+                Subjects
               </Link>
               {session.user.isAdmin && (
                 <Link href="/admin" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
