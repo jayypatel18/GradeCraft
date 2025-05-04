@@ -10,11 +10,17 @@ export default async function handler(req, res) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
+  // Check if user is admin
+  if (!session.user.isAdmin) {
+    return res.status(403).json({ message: 'Forbidden - Admin access required' });
+  }
+
   await dbConnect();
 
   try {
-    // Only get current user's results
-    const results = await Result.find({ user: session.user.id })
+    // Get all results with user information populated
+    const results = await Result.find()
+      .populate('user', 'name email')
       .sort({ createdAt: -1 });
     
     res.status(200).json({ success: true, data: results });

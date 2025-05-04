@@ -71,7 +71,8 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
         as: parseFloat(resultData.as) || 0,
         ru: resultData.ru ? parseFloat(resultData.ru) || 0 : null,
         lpw: resultData.lpw ? parseFloat(resultData.lpw) || 0 : null,
-        hasLPW: Boolean(resultData.hasLPW)
+        hasLPW: Boolean(resultData.hasLPW),
+        
       };
     
       const res = await fetch('/api/results/save', {

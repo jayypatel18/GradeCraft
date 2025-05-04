@@ -6,36 +6,50 @@ const Navbar = () => {
 
   return (
     <nav className="bg-indigo-700 text-white shadow-lg">
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold">GradeCalc
+      <div className="container mx-auto px-6 py-3 flex justify-between items-center">
+        <Link href="/" className="text-2xl font-bold">
+          Grade Calculator
+        </Link>
+        <div className="flex items-center space-x-4">
+          <Link href="/" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
+            Home
           </Link>
-          
-          <div className="flex items-center space-x-4">
-            <Link href="/calculator" className="hover:bg-indigo-600 px-3 py-2 rounded transition">Calculator
-            </Link>
-            
-            {session ? (
-              <>
-                <Link href="/account" className="hover:bg-indigo-600 px-3 py-2 rounded transition">Account
+          <Link href="/calculator" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
+            Calculator
+          </Link>
+          {session ? (
+            <>
+              <Link href="/account" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
+                My Account
+              </Link>
+              {session.user.isAdmin && (
+                <Link href="/admin" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
+                  Admin
                 </Link>
-                <button
-                  onClick={() => signOut()}
-                  className="hover:bg-indigo-600 px-3 py-2 rounded transition"
-                >
-                  Sign Out
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/auth/login" className="hover:bg-indigo-600 px-3 py-2 rounded transition">Login
-                </Link>
-                <Link href="/auth/register" className="bg-white text-indigo-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition">
-                    Sign Up
-                </Link>
-              </>
-            )}
-          </div>
+              )}
+              <button
+                onClick={() => signOut()}
+                className="hover:bg-indigo-600 px-3 py-2 rounded transition"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/auth/login"
+                className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md text-sm"
+              >
+                Login
+              </Link>
+              <Link
+                href="/auth/register"
+                className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>

@@ -8,8 +8,8 @@ export const authOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         await dbConnect();
@@ -20,29 +20,30 @@ export const authOptions = {
         const isValid = await user.matchPassword(credentials.password);
         if (!isValid) return null;
 
-        return { id: user._id, name: user.name, email: user.email };
-      }
-    })
+        return { 
+          id: user._id.toString(), 
+          name: user.name, 
+          email: user.email,
+          isAdmin: user.isAdmin // Include isAdmin field
+        };
+      },
+    }),
   ],
-  session: {
-    strategy: "jwt",
-  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.isAdmin = user.isAdmin; // Add isAdmin to token
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id;
+      session.user.isAdmin = token.isAdmin; // Add isAdmin to session
       return session;
     },
   },
-  pages: {
-    signIn: '/auth/login',
-  },
-  secret: process.env.NEXTAUTH_SECRET,
+  // ... other nextAuth options
 };
 
 export default NextAuth(authOptions);
