@@ -22,6 +22,9 @@ const Navbar = () => {
               <Link href="/account" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
                 Subjects
               </Link>
+              <Link href="/about" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
+                Creator
+              </Link>
               {session.user.isAdmin && (
                 <Link href="/admin" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
                   Admin
@@ -36,6 +39,9 @@ const Navbar = () => {
             </>
           ) : (
             <>
+              <Link href="/about" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
+                Creator
+              </Link>
               <Link
                 href="/auth/login"
                 className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md text-sm"

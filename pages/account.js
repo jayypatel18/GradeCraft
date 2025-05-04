@@ -124,7 +124,6 @@ export default function Account() {
   if (!session) {
     return (
       <div className="min-h-screen bg-gray-100">
-        <Navbar />
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6 text-center">
             <h2 className="text-xl font-semibold mb-4">Please sign in to view your account</h2>
@@ -136,7 +135,6 @@ export default function Account() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Navbar />
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
