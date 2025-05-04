@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { stringify, parse } from 'flatted';
 
 const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
   const [courseName, setCourseName] = useState('');
@@ -11,6 +10,16 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
   const [hasLPW, setHasLPW] = useState(false);
   const [results, setResults] = useState(null);
   const [selectedResult, setSelectedResult] = useState(null);
+
+  const gradeDisplayMapping = {
+    APlus: 'A+',
+    BPlus: 'B+',
+    O: 'O',
+    A: 'A',
+    B: 'B',
+    C: 'C',
+    P: 'P',
+  };
 
   const calculateGrades = () => {
     const ctVal = parseFloat(ct) || 0;
@@ -31,10 +40,20 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       APlus: ((81 - ans) / 0.4),
       A: ((71 - ans) / 0.4),
       BPlus: ((61 - ans) / 0.4),
+      B: ((51 - ans) / 0.4),
+      C: ((46 - ans) / 0.4),
+      P: ((40 - ans) / 0.4),
     };
+    
+    
 
-    setResults(gradeResults);
-    onCalculate(gradeResults);
+    // Filter the results to only include those between 0 and 100
+    const validGradeResults = Object.fromEntries(
+      Object.entries(gradeResults).filter(([grade, value]) => value >= 0 && value <= 100)
+    );
+
+    setResults(validGradeResults);
+    onCalculate(validGradeResults);
   };
 
   const handleSave = async (resultData) => {
@@ -54,10 +73,6 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
         lpw: resultData.lpw ? parseFloat(resultData.lpw) || 0 : null,
         hasLPW: Boolean(resultData.hasLPW)
       };
-  
-      // Remove stringify/parse if not needed
-      // const serialized = stringify(saveData);
-      // const deserialized = parse(serialized);
     
       const res = await fetch('/api/results/save', {
         method: 'POST',
@@ -74,11 +89,11 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       }
       
       const data = await res.json();
-    if (data.success) {
-    // Replace fetchResults() with onSave() if it's meant to refresh results
-    onSave(); // Call the prop function instead
-    alert('Results saved successfully!');
-    }
+      if (data.success) {
+        // Replace fetchResults() with onSave() if it's meant to refresh results
+        onSave(); // Call the prop function instead
+        alert('Results saved successfully!');
+      }
     } catch (error) {
       console.error('Save error:', error);
       alert(`Failed to save: ${error.message}`);
@@ -191,20 +206,20 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
         </button>
         {isLoggedIn && (
           <button
-          onClick={() => handleSave({
-            courseName,
-            ct,
-            se,
-            as,
-            ru,
-            lpw,
-            hasLPW
-          })}
-          className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200"
-          disabled={!results || !courseName}
-        >
-          Save Results
-        </button>
+            onClick={() => handleSave({
+              courseName,
+              ct,
+              se,
+              as,
+              ru,
+              lpw,
+              hasLPW
+            })}
+            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200"
+            disabled={!results || !courseName}
+          >
+            Save Results
+          </button>
         )}
       </div>
 
@@ -230,30 +245,34 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       )}
 
       {results && (
-        <div className="bg-gray-50 p-4 rounded-lg">
+        <div className="bg-gray-50 p-4 rounded-lg fle">
           <h3 className="text-lg font-semibold mb-2 text-gray-700">Required Final Exam Marks</h3>
           <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="font-medium text-red-600">For O Grade:</span>
-              <span>{results.O.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-green-600">For A+ Grade:</span>
-              <span>{results.APlus.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-yellow-600">For A Grade:</span>
-              <span>{results.A.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-blue-600">For B+ Grade:</span>
-              <span>{results.BPlus.toFixed(2)}</span>
-            </div>
+            {Object.entries(results).map(([grade, value]) => (
+              <div className="flex justify-between" key={grade}>
+                <span className={`font-medium ${getGradeColor(grade)}`}>For {gradeDisplayMapping[grade]} Grade:</span>
+                <span>{value.toFixed(2)}</span>
+              </div>
+            ))}
           </div>
         </div>
       )}
     </div>
   );
 };
+
+// Helper function to get grade color
+const getGradeColor = (grade) => {
+    switch (grade) {
+      case 'O': return 'text-red-600';
+      case 'APlus': return 'text-green-600';
+      case 'A': return 'text-orange-600';
+      case 'BPlus': return 'text-blue-600';
+      case 'B': return 'text-purple-600';
+      case 'C': return 'text-rose-600';
+      case 'P': return 'text-pink-600';
+      default: return 'text-black-600';
+    }
+  };
 
 export default GradeCalculator;
