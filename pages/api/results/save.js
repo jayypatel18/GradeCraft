@@ -1,13 +1,14 @@
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
 import dbConnect from '../../../utils/dbConnect';
 import Result from '../../../models/Result';
+import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
   if (!session) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
@@ -18,15 +19,15 @@ export default async function handler(req, res) {
     const { courseName, ct, se, as, ru, lpw, hasLPW } = req.body;
     
     const result = await Result.create({
-      user: session.user.id,
-      courseName,
-      ct: parseFloat(ct),
-      se: parseFloat(se),
-      as: parseFloat(as),
-      ru: ru ? parseFloat(ru) : undefined,
-      lpw: lpw ? parseFloat(lpw) : undefined,
-      hasLPW: Boolean(hasLPW)
-    });
+        user: session.user.id,
+        courseName: courseName.trim(), // Use the destructured variable
+        ct: parseFloat(ct),
+        se: parseFloat(se),
+        as: parseFloat(as),
+        ru: ru ? parseFloat(ru) : undefined,
+        lpw: lpw ? parseFloat(lpw) : undefined,
+        hasLPW: Boolean(hasLPW)
+      });
 
     res.status(201).json({ 
       success: true, 

@@ -39,39 +39,46 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
 
   const handleSave = async (resultData) => {
     try {
-      // Create a clean, serializable object
+      // Validate required fields
+      if (!resultData.courseName || resultData.courseName.trim() === '') {
+        throw new Error('Course name is required');
+      }
+      
+      // Create a clean, serializable object with proper number conversions
       const saveData = {
-        courseName: resultData.courseName,
-        ct: resultData.ct,
-        se: resultData.se,
-        as: resultData.as,
-        ru: resultData.ru || null,
-        lpw: resultData.lpw || null,
-        hasLPW: resultData.hasLPW || false
+        courseName: resultData.courseName.trim(),
+        ct: parseFloat(resultData.ct) || 0, // Use 0 instead of NaN
+        se: parseFloat(resultData.se) || 0,
+        as: parseFloat(resultData.as) || 0,
+        ru: resultData.ru ? parseFloat(resultData.ru) || 0 : null,
+        lpw: resultData.lpw ? parseFloat(resultData.lpw) || 0 : null,
+        hasLPW: Boolean(resultData.hasLPW)
       };
-
-      const serialized = stringify(saveData);
-     const deserialized = parse(serialized);
   
+      // Remove stringify/parse if not needed
+      // const serialized = stringify(saveData);
+      // const deserialized = parse(serialized);
+    
       const res = await fetch('/api/results/save', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(deserialized),
+        body: JSON.stringify(saveData),
         credentials: 'include',
       });
-  
+      
+      // Rest of your code remains the same
       if (!res.ok) {
         throw new Error(await res.text());
       }
-  
+      
       const data = await res.json();
-      if (data.success) {
-        fetchResults(); // Refresh the list
-        // Optional: Show success message
-        alert('Results saved successfully!');
-      }
+    if (data.success) {
+    // Replace fetchResults() with onSave() if it's meant to refresh results
+    onSave(); // Call the prop function instead
+    alert('Results saved successfully!');
+    }
     } catch (error) {
       console.error('Save error:', error);
       alert(`Failed to save: ${error.message}`);
@@ -184,12 +191,20 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
         </button>
         {isLoggedIn && (
           <button
-            onClick={handleSave}
-            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200"
-            disabled={!results || !courseName}
-          >
-            Save Results
-          </button>
+          onClick={() => handleSave({
+            courseName,
+            ct,
+            se,
+            as,
+            ru,
+            lpw,
+            hasLPW
+          })}
+          className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200"
+          disabled={!results || !courseName}
+        >
+          Save Results
+        </button>
         )}
       </div>
 

@@ -1,9 +1,9 @@
 import dbConnect from '../../../utils/dbConnect';
 import Result from '../../../models/Result';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
 
 export default async function handler(req, res) {
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
   if (!session) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
