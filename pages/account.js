@@ -5,6 +5,29 @@ import { useState, useEffect } from 'react';
 export default function Account() {
   const { data: session } = useSession();
   const [savedResults, setSavedResults] = useState([]);
+  
+  const gradeDisplayMapping = {
+    APlus: 'A+',
+    BPlus: 'B+',
+    O: 'O',
+    A: 'A',
+    B: 'B',
+    C: 'C',
+    P: 'P',
+  };
+  
+  const getGradeColor = (grade) => {
+    switch (grade) {
+      case 'O': return 'text-red-600';
+      case 'APlus': return 'text-green-600';
+      case 'A': return 'text-orange-600';
+      case 'BPlus': return 'text-blue-600';
+      case 'B': return 'text-purple-600';
+      case 'C': return 'text-rose-600';
+      case 'P': return 'text-pink-600';
+      default: return 'text-black-600';
+    }
+  };
 
   useEffect(() => {
     if (session) {
@@ -28,6 +51,37 @@ export default function Account() {
     if (data.success) {
       fetchResults();
     }
+  };
+  
+  // Function to calculate required grades for a result
+  const calculateRequiredMarks = (result) => {
+    const ctVal = parseFloat(result.ct) || 0;
+    const seVal = parseFloat(result.se) || 0;
+    const asVal = parseFloat(result.as) || 0;
+    const ruVal = parseFloat(result.ru) || 0;
+    const lpwVal = parseFloat(result.lpw) || 0;
+
+    let ans;
+    if (result.hasLPW) {
+      ans = ((ctVal + (seVal * 1.2) + asVal) * 0.3) + (((ruVal * 0.6) + lpwVal) * 0.3);
+    } else {
+      ans = ((ctVal + (seVal * 1.2) + asVal) * 0.6);
+    }
+
+    const gradeResults = {
+      O: ((91 - ans) / 0.4),
+      APlus: ((81 - ans) / 0.4),
+      A: ((71 - ans) / 0.4),
+      BPlus: ((61 - ans) / 0.4),
+      B: ((51 - ans) / 0.4),
+      C: ((46 - ans) / 0.4),
+      P: ((40 - ans) / 0.4),
+    };
+
+    // Filter the results to only include those between 0 and 100
+    return Object.fromEntries(
+      Object.entries(gradeResults).filter(([_, value]) => value >= 0 && value <= 100)
+    );
   };
 
   if (!session) {
@@ -68,25 +122,50 @@ export default function Account() {
               <p className="text-gray-600">No saved results yet.</p>
             ) : (
               <div className="space-y-4">
-                {savedResults.map((result) => (
-                  <div key={result._id} className="border rounded-lg p-4 hover:bg-gray-50">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-semibold text-lg">{result.courseName}</h3>
-                        <p className="text-gray-600 text-sm">
-                          CT: {result.ct} | SE: {result.se} | AS: {result.as}
-                          {result.hasLPW && ` | RU: ${result.ru} | LPW: ${result.lpw}`}
-                        </p>
+                {savedResults.map((result) => {
+                  // Calculate required marks for each saved result
+                  const requiredMarks = calculateRequiredMarks(result);
+                  
+                  return (
+                    <div key={result._id} className="border rounded-lg p-4 hover:bg-gray-50">
+                      <div className="flex justify-between items-start">
+                        <div className="w-full">
+                          <h3 className="font-semibold text-lg">{result.courseName}</h3>
+                          <p className="text-gray-600 text-sm">
+                            CT: {result.ct} | SE: {result.se} | AS: {result.as}
+                            {result.hasLPW && ` | RU: ${result.ru} | LPW: ${result.lpw}`}
+                          </p>
+                          
+                          {/* Required Final Exam Marks section */}
+                          <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                            <h4 className="text-md font-semibold mb-2 text-gray-700">Required Final Exam Marks</h4>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                              {Object.entries(requiredMarks).length > 0 ? (
+                                Object.entries(requiredMarks).map(([grade, value]) => (
+                                  <div key={grade} className="flex items-center space-x-2">
+                                    <span className={`font-medium ${getGradeColor(grade)}`}>
+                                      {gradeDisplayMapping[grade]}:
+                                    </span>
+                                    <span>{value.toFixed(2)}</span>
+                                  </div>
+                                ))
+                              ) : (
+                                <span className="text-gray-500 col-span-full">No achievable grades</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <button
+                          onClick={() => deleteResult(result._id)}
+                          className="text-red-600 hover:text-red-800 ml-4"
+                        >
+                          Delete
+                        </button>
                       </div>
-                      <button
-                        onClick={() => deleteResult(result._id)}
-                        className="text-red-600 hover:text-red-800"
-                      >
-                        Delete
-                      </button>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
