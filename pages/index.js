@@ -1,7 +1,10 @@
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import Navbar from '../components/Navbar';
 
 export default function Home() {
+  const { data: session } = useSession();
+
   return (
     <div className="min-h-screen bg-gray-100 pt-4 sm:pt-8 md:pt-12">
       <div className="px-4 sm:px-6 md:px-8 max-w-6xl mx-auto">
@@ -12,12 +15,19 @@ export default function Home() {
           </p>
           
           {/* Responsive button */}
-          <Link
-            href="/calculator"
+          {!session ? (<Link
+            href="/auth/register"
             className="inline-block w-full sm:w-auto text-center px-4 sm:px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-200"
           >
             Get Started
-          </Link>
+          </Link>):(
+            <Link
+              href="/calculator"
+              className="inline-block w-full sm:w-auto text-center px-4 sm:px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-200"
+            >
+              Get Started
+            </Link>
+          )}
         </div>
       </div>
     </div>

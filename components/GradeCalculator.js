@@ -1,6 +1,9 @@
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+
 
 const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
+  const { data: session } = useSession();
   const [courseName, setCourseName] = useState('');
   const [ct, setCt] = useState('');
   const [se, setSe] = useState('');
