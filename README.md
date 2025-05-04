@@ -143,7 +143,7 @@ The application is deployed on Vercel. For deployment instructions:
 
 ## Contact
 
-- Developer: Jay Patel (22BCE251)
+- Developer: Jay Patel
 - Email: 22bce251@nirmauni.ac.in
 - GitHub: [jayypatel18](https://github.com/jayypatel18)
 
