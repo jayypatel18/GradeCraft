@@ -11,7 +11,7 @@
 !.yarn/versions
 .env.local
 pages/admin
-/.vscode/
+.vscode
 
 push.sh
 
