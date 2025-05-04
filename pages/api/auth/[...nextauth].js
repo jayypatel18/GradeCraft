@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import User from '../../../models/User';
 import dbConnect from '../../../utils/dbConnect';
 
-export default NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -13,30 +13,20 @@ export default NextAuth({
       },
       async authorize(credentials) {
         await dbConnect();
-
+        
         const user = await User.findOne({ email: credentials.email });
-
-        if (!user) {
-          throw new Error('No user found with this email');
-        }
+        if (!user) return null;
 
         const isValid = await user.matchPassword(credentials.password);
+        if (!isValid) return null;
 
-        if (!isValid) {
-          throw new Error('Invalid password');
-        }
-
-        return {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-        };
+        return { id: user._id, name: user.name, email: user.email };
       }
     })
   ],
-  secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -50,4 +40,10 @@ export default NextAuth({
       return session;
     },
   },
-});
+  pages: {
+    signIn: '/auth/login',
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+};
+
+export default NextAuth(authOptions);

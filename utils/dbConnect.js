@@ -1,18 +1,41 @@
 import mongoose from 'mongoose';
 
-const connection = {};
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable');
+}
+
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
 
 async function dbConnect() {
-  if (connection.isConnected) {
-    return;
+  if (cached.conn) {
+    return cached.conn;
   }
 
-  const db = await mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  if (!cached.promise) {
+    const opts = {
+      dbName: 'grade-calculator', // Explicitly set your database name here
+      bufferCommands: false,
+    };
 
-  connection.isConnected = db.connections[0].readyState;
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      return mongoose;
+    });
+  }
+
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
+
+  return cached.conn;
 }
 
 export default dbConnect;
