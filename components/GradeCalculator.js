@@ -44,8 +44,6 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       C: ((46 - ans) / 0.4),
       P: ((40 - ans) / 0.4),
     };
-    
-    
 
     // Filter the results to only include those between 0 and 100
     const validGradeResults = Object.fromEntries(
@@ -62,7 +60,7 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       if (!resultData.courseName || resultData.courseName.trim() === '') {
         throw new Error('Course name is required');
       }
-      
+
       // Create a clean, serializable object with proper number conversions
       const saveData = {
         courseName: resultData.courseName.trim(),
@@ -72,9 +70,8 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
         ru: resultData.ru ? parseFloat(resultData.ru) || 0 : null,
         lpw: resultData.lpw ? parseFloat(resultData.lpw) || 0 : null,
         hasLPW: Boolean(resultData.hasLPW),
-        
       };
-    
+
       const res = await fetch('/api/results/save', {
         method: 'POST',
         headers: {
@@ -83,12 +80,12 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
         body: JSON.stringify(saveData),
         credentials: 'include',
       });
-      
+
       // Rest of your code remains the same
       if (!res.ok) {
         throw new Error(await res.text());
       }
-      
+
       const data = await res.json();
       if (data.success) {
         // Replace fetchResults() with onSave() if it's meant to refresh results
@@ -113,51 +110,52 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-bold mb-4 text-indigo-700">Grade Calculator</h2>
-      
+    <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+      <h2 className="text-xl sm:text-2xl font-bold mb-4 text-indigo-700">Grade Calculator</h2>
+
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">Course Name</label>
+        <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">Course Name</label>
         <input
           type="text"
           value={courseName}
           onChange={(e) => setCourseName(e.target.value)}
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
           placeholder="Enter course name"
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4"></div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
         <div>
-          <label className="block text-gray-700 mb-2">CT Marks</label>
+          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">CT Marks</label>
           <input
             type="number"
             value={ct}
             onChange={(e) => setCt(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
             placeholder="Enter CT marks"
           />
         </div>
         <div>
-          <label className="block text-gray-700 mb-2">SE Marks</label>
+          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">SE Marks</label>
           <input
             type="number"
             value={se}
             onChange={(e) => setSe(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
             placeholder="Enter SE marks"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
         <div>
-          <label className="block text-gray-700 mb-2">AS Marks</label>
+          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">AS Marks</label>
           <input
             type="number"
             value={as}
             onChange={(e) => setAs(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
             placeholder="Enter AS marks"
           />
         </div>
@@ -167,41 +165,41 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
             id="hasLPW"
             checked={hasLPW}
             onChange={(e) => setHasLPW(e.target.checked)}
-            className="mr-2 h-5 w-5 text-indigo-600"
+            className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-indigo-600"
           />
-          <label htmlFor="hasLPW" className="text-gray-700">Has LPW Component</label>
+          <label htmlFor="hasLPW" className="text-gray-700 text-sm sm:text-base">Has LPW Component</label>
         </div>
       </div>
 
       {hasLPW && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
           <div>
-            <label className="block text-gray-700 mb-2">RU Marks</label>
+            <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">RU Marks</label>
             <input
               type="number"
               value={ru}
               onChange={(e) => setRu(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
               placeholder="Enter RU marks"
             />
           </div>
           <div>
-            <label className="block text-gray-700 mb-2">LPW Marks</label>
+            <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">LPW Marks</label>
             <input
               type="number"
               value={lpw}
               onChange={(e) => setLpw(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
               placeholder="Enter LPW marks"
             />
           </div>
         </div>
       )}
 
-      <div className="flex flex-wrap gap-4 mb-6">
+      <div className="flex flex-wrap gap-3 sm:gap-4 mb-5 sm:mb-6">
         <button
           onClick={calculateGrades}
-          className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-200"
+          className="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-200 text-sm sm:text-base"
         >
           Calculate
         </button>
@@ -216,7 +214,7 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
               lpw,
               hasLPW
             })}
-            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200"
+            className="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 text-sm sm:text-base"
             disabled={!results || !courseName}
           >
             Save Results
@@ -225,19 +223,19 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       </div>
 
       {isLoggedIn && savedResults.length > 0 && (
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-2 text-gray-700">Saved Results</h3>
-          <div className="space-y-2">
+        <div className="mb-5 sm:mb-6">
+          <h3 className="text-base sm:text-lg font-semibold mb-2 text-gray-700">Saved Results</h3>
+          <div className="space-y-2 max-h-60 overflow-y-auto">
             {savedResults.map((result) => (
               <div
                 key={result._id}
-                // onClick={() => loadSavedResult(result)}
-                className={`p-3 border rounded-lg cursor-pointer hover:bg-gray-50 ${selectedResult === result._id ? 'bg-indigo-50 border-indigo-300' : ''}`}
+                onClick={() => loadSavedResult(result)}
+                className={`p-2 sm:p-3 border rounded-lg cursor-pointer hover:bg-gray-50 ${selectedResult === result._id ? 'bg-indigo-50 border-indigo-300' : ''}`}
               >
-                <div className="font-medium">{result.courseName}</div>
-                <div className="text-sm text-gray-500">
-                  ClassTest: {result.ct}, SessionExamination: {result.se}, Assignment: {result.as}
-                  {result.hasLPW && `, Rubrics: ${result.ru}, LPW: ${result.lpw}`}
+                <div className="font-medium text-sm sm:text-base">{result.courseName}</div>
+                <div className="text-xs sm:text-sm text-gray-500">
+                  CT: {result.ct}, SE: {result.se}, AS: {result.as}
+                  {result.hasLPW && `, RU: ${result.ru}, LPW: ${result.lpw}`}
                 </div>
               </div>
             ))}
@@ -246,13 +244,15 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       )}
 
       {results && (
-        <div className="bg-gray-50 p-4 rounded-lg fle">
-          <h3 className="text-lg font-semibold mb-2 text-gray-700">Required Final Exam Marks</h3>
-          <div className="space-y-2">
+        <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="text-base sm:text-lg font-semibold mb-2 text-gray-700">Required Final Exam Marks</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
             {Object.entries(results).map(([grade, value]) => (
-              <div className="flex justify-between" key={grade}>
-                <span className={`font-medium ${getGradeColor(grade)}`}>For {gradeDisplayMapping[grade]} Grade:</span>
-                <span>{value.toFixed(2)}</span>
+              <div className="flex justify-between items-center" key={grade}>
+                <span className={`font-medium text-sm sm:text-base ${getGradeColor(grade)}`}>
+                  For {gradeDisplayMapping[grade]} Grade:
+                </span>
+                <span className="text-sm sm:text-base">{value.toFixed(2)}</span>
               </div>
             ))}
           </div>
@@ -264,16 +264,16 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
 
 // Helper function to get grade color
 const getGradeColor = (grade) => {
-    switch (grade) {
-      case 'O': return 'text-red-600';
-      case 'APlus': return 'text-green-600';
-      case 'A': return 'text-orange-600';
-      case 'BPlus': return 'text-blue-600';
-      case 'B': return 'text-purple-600';
-      case 'C': return 'text-rose-600';
-      case 'P': return 'text-pink-600';
-      default: return 'text-black-600';
-    }
-  };
+  switch (grade) {
+    case 'O': return 'text-red-600';
+    case 'APlus': return 'text-green-600';
+    case 'A': return 'text-orange-600';
+    case 'BPlus': return 'text-blue-600';
+    case 'B': return 'text-purple-600';
+    case 'C': return 'text-rose-600';
+    case 'P': return 'text-pink-600';
+    default: return 'text-black-600';
+  }
+};
 
 export default GradeCalculator;

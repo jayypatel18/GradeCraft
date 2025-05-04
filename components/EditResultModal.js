@@ -41,13 +41,14 @@ const EditResultModal = ({ result, isOpen, onClose, onSave }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4 py-6">
+      <div className="bg-white rounded-lg p-4 sm:p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold text-gray-900">Edit Result</h3>
           <button 
             onClick={onClose} 
-            className="text-gray-500 hover:text-gray-700"
+            className="text-gray-500 hover:text-gray-700 text-xl"
+            aria-label="Close"
           >
             ×
           </button>
@@ -55,51 +56,51 @@ const EditResultModal = ({ result, isOpen, onClose, onSave }) => {
         
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Course Name</label>
+            <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">Course Name</label>
             <input
               type="text"
               name="courseName"
               value={formData.courseName}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
               required
             />
           </div>
           
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
             <div>
-              <label className="block text-gray-700 mb-2">CT Marks</label>
+              <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">CT Marks</label>
               <input
                 type="number"
                 name="ct"
                 value={formData.ct}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
                 required
               />
             </div>
             <div>
-              <label className="block text-gray-700 mb-2">SE Marks</label>
+              <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">SE Marks</label>
               <input
                 type="number"
                 name="se"
                 value={formData.se}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
                 required
               />
             </div>
           </div>
           
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
             <div>
-              <label className="block text-gray-700 mb-2">AS Marks</label>
+              <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">AS Marks</label>
               <input
                 type="number"
                 name="as"
                 value={formData.as}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
                 required
               />
             </div>
@@ -110,48 +111,48 @@ const EditResultModal = ({ result, isOpen, onClose, onSave }) => {
                 name="hasLPW"
                 checked={formData.hasLPW}
                 onChange={handleChange}
-                className="mr-2 h-5 w-5 text-indigo-600"
+                className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-indigo-600"
               />
-              <label htmlFor="hasLPW" className="text-gray-700">Has LPW Component</label>
+              <label htmlFor="hasLPW" className="text-gray-700 text-sm sm:text-base">Has LPW Component</label>
             </div>
           </div>
           
           {formData.hasLPW && (
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
               <div>
-                <label className="block text-gray-700 mb-2">RU Marks</label>
+                <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">RU Marks</label>
                 <input
                   type="number"
                   name="ru"
                   value={formData.ru}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 mb-2">LPW Marks</label>
+                <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">LPW Marks</label>
                 <input
                   type="number"
                   name="lpw"
                   value={formData.lpw}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
                 />
               </div>
             </div>
           )}
           
-          <div className="flex justify-end space-x-3">
+          <div className="flex flex-col sm:flex-row sm:justify-end space-y-2 sm:space-y-0 sm:space-x-3">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300"
+              className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 text-sm sm:text-base"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
+              className="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 text-sm sm:text-base"
             >
               Save Changes
             </button>

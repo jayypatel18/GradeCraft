@@ -10,7 +10,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     <SessionProvider session={session} refetchInterval={5 * 60}>
       <div className="flex flex-col min-h-screen">
       <Navbar />
-        <Component {...pageProps} />
+        <main className="flex-grow w-full px-4 sm:px-6 lg:px-8">
+          <Component {...pageProps} />
+        </main>
       </div>
       <Footer />
     </SessionProvider>

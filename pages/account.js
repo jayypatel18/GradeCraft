@@ -123,9 +123,9 @@ export default function Account() {
 
   if (!session) {
     return (
-      <div className="min-h-screen bg-gray-100">
-        <div className="container mx-auto px-4 py-8">
-          <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6 text-center">
+      <div className="min-h-screen bg-gray-100 py-6">
+        <div className="max-w-md mx-auto px-4">
+          <div className="bg-white rounded-lg shadow-md p-6 text-center">
             <h2 className="text-xl font-semibold mb-4">Please sign in to view your account</h2>
           </div>
         </div>
@@ -134,84 +134,82 @@ export default function Account() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-2xl font-bold mb-4 text-indigo-700">Your Account</h2>
-            <div className="mb-4">
-              <p className="text-gray-700"><span className="font-semibold">Name:</span> {session.user.name}</p>
-              <p className="text-gray-700"><span className="font-semibold">Email:</span> {session.user.email}</p>
-            </div>
-            <button
-              onClick={() => signOut()}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
-            >
-              Sign Out
-            </button>
+    <div className="min-h-screen bg-gray-100 py-4 sm:py-6 md:py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-4 sm:mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-indigo-700">Your Account</h2>
+          <div className="mb-4">
+            <p className="text-sm sm:text-base text-gray-700"><span className="font-semibold">Name:</span> {session.user.name}</p>
+            <p className="text-sm sm:text-base text-gray-700"><span className="font-semibold">Email:</span> {session.user.email}</p>
           </div>
+          <button
+            onClick={() => signOut()}
+            className="px-3 sm:px-4 py-1.5 sm:py-2 bg-red-600 text-white text-sm sm:text-base rounded-lg hover:bg-red-700 transition"
+          >
+            Sign Out
+          </button>
+        </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-4 text-indigo-700">Saved Results</h2>
-            {savedResults.length === 0 ? (
-              <p className="text-gray-600">No saved results yet.</p>
-            ) : (
-              <div className="space-y-4">
-                {savedResults.map((result) => {
-                  // Calculate required marks for each saved result
-                  const requiredMarks = calculateRequiredMarks(result);
-                  
-                  return (
-                    <div key={result._id} className="border rounded-lg p-4 hover:bg-gray-50">
-                      <div className="flex justify-between items-start">
-                        <div className="w-full">
-                          <h3 className="font-semibold text-lg">{result.courseName}</h3>
-                          <p className="text-gray-600 text-sm">
-                            ClassTest: {result.ct} | SessionalExaminations: {result.se} | Assignment: {result.as}
-                            {result.hasLPW && ` | Rubrics: ${result.ru} | LPW: ${result.lpw}`}
-                          </p>
-                          
-                          {/* Required Final Exam Marks section */}
-                          <div className="mt-3 p-3 bg-gray-50 rounded-lg">
-                            <h4 className="text-md font-semibold mb-2 text-gray-700">Required Final Exam Marks</h4>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                              {Object.entries(requiredMarks).length > 0 ? (
-                                Object.entries(requiredMarks).map(([grade, value]) => (
-                                  <div key={grade} className="flex items-center space-x-2">
-                                    <span className={`font-medium ${getGradeColor(grade)}`}>
-                                      {gradeDisplayMapping[grade]}:
-                                    </span>
-                                    <span>{value.toFixed(2)}</span>
-                                  </div>
-                                ))
-                              ) : (
-                                <span className="text-gray-500 col-span-full">No achievable grades</span>
-                              )}
-                            </div>
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-indigo-700">Saved Results</h2>
+          {savedResults.length === 0 ? (
+            <p className="text-gray-600 text-sm sm:text-base">No saved results yet.</p>
+          ) : (
+            <div className="space-y-3 sm:space-y-4">
+              {savedResults.map((result) => {
+                // Calculate required marks for each saved result
+                const requiredMarks = calculateRequiredMarks(result);
+                
+                return (
+                  <div key={result._id} className="border rounded-lg p-3 sm:p-4 hover:bg-gray-50">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                      <div className="w-full mb-3 sm:mb-0">
+                        <h3 className="font-semibold text-base sm:text-lg">{result.courseName}</h3>
+                        <p className="text-xs sm:text-sm text-gray-600">
+                          ClassTest: {result.ct} | SessionalExaminations: {result.se} | Assignment: {result.as}
+                          {result.hasLPW && ` | Rubrics: ${result.ru} | LPW: ${result.lpw}`}
+                        </p>
+                        
+                        {/* Required Final Exam Marks section */}
+                        <div className="mt-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
+                          <h4 className="text-sm sm:text-md font-semibold mb-2 text-gray-700">Required Final Exam Marks</h4>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
+                            {Object.entries(requiredMarks).length > 0 ? (
+                              Object.entries(requiredMarks).map(([grade, value]) => (
+                                <div key={grade} className="flex items-center space-x-1 sm:space-x-2">
+                                  <span className={`font-medium text-xs sm:text-sm ${getGradeColor(grade)}`}>
+                                    {gradeDisplayMapping[grade]}:
+                                  </span>
+                                  <span className="text-xs sm:text-sm">{value.toFixed(2)}</span>
+                                </div>
+                              ))
+                            ) : (
+                              <span className="text-gray-500 col-span-full text-xs sm:text-sm">No achievable grades</span>
+                            )}
                           </div>
                         </div>
-                        
-                        <div className="flex space-x-2">
-                          <button
-                            onClick={() => openEditModal(result)}
-                            className="text-blue-600 hover:text-blue-800"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => deleteResult(result._id)}
-                            className="text-red-600 hover:text-red-800"
-                          >
-                            Delete
-                          </button>
-                        </div>
+                      </div>
+                      
+                      <div className="flex space-x-2 sm:space-x-3 mt-2 sm:mt-0 sm:ml-4">
+                        <button
+                          onClick={() => openEditModal(result)}
+                          className="text-blue-600 hover:text-blue-800 text-sm sm:text-base"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => deleteResult(result._id)}
+                          className="text-red-600 hover:text-red-800 text-sm sm:text-base"
+                        >
+                          Delete
+                        </button>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
       

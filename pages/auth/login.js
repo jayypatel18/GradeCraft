@@ -29,20 +29,20 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6 sm:py-8">
         <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="bg-indigo-700 py-4 px-6">
-            <h2 className="text-2xl font-bold text-white">Login</h2>
+          <div className="bg-indigo-700 py-3 sm:py-4 px-4 sm:px-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-white">Login</h2>
           </div>
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             {error && (
-              <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
+              <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
                 {error}
               </div>
             )}
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label className="block text-gray-700 mb-2" htmlFor="email">
+                <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base" htmlFor="email">
                   Email
                 </label>
                 <input
@@ -50,12 +50,12 @@ export default function Login() {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
                   required
                 />
               </div>
-              <div className="mb-6">
-                <label className="block text-gray-700 mb-2" htmlFor="password">
+              <div className="mb-5 sm:mb-6">
+                <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base" htmlFor="password">
                   Password
                 </label>
                 <input
@@ -63,20 +63,21 @@ export default function Login() {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
                   required
                 />
               </div>
               <button
                 type="submit"
-                className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-200"
+                className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-200 text-sm sm:text-base"
               >
                 Login
               </button>
             </form>
             <div className="mt-4 text-center">
-              <span className="text-gray-600">Don't have an account? </span>
-              <Link href="/auth/register" className="text-indigo-600 hover:underline">Sign up
+              <span className="text-gray-600 text-sm sm:text-base">Don't have an account? </span>
+              <Link href="/auth/register" className="text-indigo-600 hover:underline text-sm sm:text-base">
+                Sign up
               </Link>
             </div>
           </div>
