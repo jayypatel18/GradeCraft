@@ -171,7 +171,7 @@ export default function Account() {
                         </p>
                         
                         {/* Required Final Exam Marks section */}
-                        <div className="mt-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
+                        <div className="mt-3 p-2 sm:p-3 bg-gray-200 rounded-lg">
                           <h4 className="text-sm sm:text-md font-semibold mb-2 text-gray-700">Required Final Exam Marks</h4>
                           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
                             {Object.entries(requiredMarks).length > 0 ? (
