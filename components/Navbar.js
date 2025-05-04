@@ -14,11 +14,11 @@ const Navbar = () => {
           <Link href="/" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
             Home
           </Link>
-          <Link href="/calculator" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
-            Calculator
-          </Link>
           {session ? (
             <>
+              <Link href="/calculator" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
+                Calculator
+              </Link>
               <Link href="/account" className="hover:bg-indigo-600 px-3 py-2 rounded transition">
                 Subjects
               </Link>
