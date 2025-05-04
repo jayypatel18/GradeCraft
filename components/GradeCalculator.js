@@ -232,7 +232,7 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
             {savedResults.map((result) => (
               <div
                 key={result._id}
-                onClick={() => loadSavedResult(result)}
+                // onClick={() => loadSavedResult(result)}
                 className={`p-2 sm:p-3 border rounded-lg cursor-pointer hover:bg-gray-50 ${selectedResult === result._id ? 'bg-indigo-50 border-indigo-300' : ''}`}
               >
                 <div className="font-medium text-sm sm:text-base">{result.courseName}</div>
