@@ -18,8 +18,15 @@ export default async function handler(req, res) {
 
   try {
     const { id } = req.query;
+    let result;
 
-    const result = await Result.findOneAndDelete({ _id: id, user: session.user.id });
+    // If admin, allow deleting any result
+    if (session.user.isAdmin) {
+      result = await Result.findByIdAndDelete(id);
+    } else {
+      // Regular users can only delete their own results
+      result = await Result.findOneAndDelete({ _id: id, user: session.user.id });
+    }
 
     if (!result) {
       return res.status(404).json({ success: false, message: 'Result not found' });
@@ -27,6 +34,7 @@ export default async function handler(req, res) {
 
     res.status(200).json({ success: true, data: {} });
   } catch (error) {
+    console.error('Delete error:', error);
     res.status(400).json({ success: false, error: error.message });
   }
 }
