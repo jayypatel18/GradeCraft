@@ -164,9 +164,9 @@ export default function Account() {
 
   return (
     <div className="min-h-screen bg-gray-100 py-4 sm:py-6 md:py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-4 sm:mb-6">
-          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-indigo-700">Your Account</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-indigo-700">Welcome back,  {session.user.name.split(' ')[0]}!</h2>
           <div className="mb-4">
             <p className="text-sm sm:text-base text-gray-700"><span className="font-semibold">Name:</span> {session.user.name}</p>
             <p className="text-sm sm:text-base text-gray-700"><span className="font-semibold">Email:</span> {session.user.email}</p>
@@ -184,55 +184,59 @@ export default function Account() {
           {savedResults.length === 0 ? (
             <p className="text-gray-600 text-sm sm:text-base">No saved results yet.</p>
           ) : (
-            <div className="space-y-3 sm:space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {savedResults.map((result) => {
-                // Calculate required marks for each saved result
                 const requiredMarks = calculateRequiredMarks(result);
                 
                 return (
-                  <div key={result._id} className="border rounded-lg p-3 sm:p-4 hover:bg-gray-50">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
-                      <div className="w-full mb-3 sm:mb-0">
-                        <h3 className="font-semibold text-base sm:text-lg">{result.courseName}</h3>
-                        <p className="text-xs sm:text-sm text-gray-600">
-                          ClassTest: {result.ct} | SessionalExaminations: {result.se} | Assignment: {result.as}
-                          {result.hasLPW && ` | Rubrics: ${result.ru} | LPW: ${result.lpw}`}
-                        </p>
-                        
-                        {/* Required Final Exam Marks section */}
-                        <div className="mt-3 p-2 sm:p-3 bg-gray-200 rounded-lg">
-                          <h4 className="text-sm sm:text-md font-semibold mb-2 text-gray-700">Required Final Exam Marks</h4>
-                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
-                            {Object.entries(requiredMarks).length > 0 ? (
-                              Object.entries(requiredMarks).map(([grade, value]) => (
-                                <div key={grade} className="flex items-center space-x-1 sm:space-x-2">
-                                  <span className={`font-medium text-xs sm:text-sm ${getGradeColor(grade)}`}>
-                                    {gradeDisplayMapping[grade]}:
-                                  </span>
-                                  <span className="text-xs sm:text-sm">{value.toFixed(2)}</span>
-                                </div>
-                              ))
-                            ) : (
-                              <span className="text-gray-500 col-span-full text-xs sm:text-sm">No achievable grades</span>
-                            )}
-                          </div>
-                        </div>
+                  <div key={result._id} className="p-4 border rounded-lg bg-white shadow-sm hover:shadow-md transition">
+                    <div>
+                      <h3 className="font-medium text-lg text-indigo-700 mb-2">{result.courseName}</h3>
+                      <p className="text-sm text-gray-600 mb-2">
+                        <span className="font-semibold">CT:</span> {result.ct} | 
+                        <span className="font-semibold"> SE:</span> {result.se} | 
+                        <span className="font-semibold"> AS:</span> {result.as}
+                        {result.hasLPW && (
+                          <>
+                            <br />
+                            <span className="font-semibold">RU:</span> {result.ru} | 
+                            <span className="font-semibold"> LPW:</span> {result.lpw}
+                          </>
+                        )}
+                      </p>
+                    </div>
+                    
+                    <div className="mt-3 p-2 bg-gray-50 rounded-lg">
+                      <h4 className="text-sm font-semibold mb-2 text-gray-700">Required Final Exam Marks</h4>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {Object.entries(requiredMarks).length > 0 ? (
+                          Object.entries(requiredMarks).map(([grade, value]) => (
+                            <div key={grade} className="flex items-center space-x-1">
+                              <span className={`font-medium text-xs ${getGradeColor(grade)}`}>
+                                {gradeDisplayMapping[grade]}:
+                              </span>
+                              <span className="text-xs">{value.toFixed(2)}</span>
+                            </div>
+                          ))
+                        ) : (
+                          <span className="text-gray-500 col-span-full text-xs">No achievable grades</span>
+                        )}
                       </div>
-                      
-                      <div className="flex space-x-2 sm:space-x-3 mt-2 sm:mt-0 sm:ml-4">
-                        <button
-                          onClick={() => openEditModal(result)}
-                          className="text-blue-600 hover:text-blue-800 text-sm sm:text-base"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => confirmDelete(result._id, result.courseName)}
-                          className="text-red-600 hover:text-red-800 text-sm sm:text-base"
-                        >
-                          Delete
-                        </button>
-                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between mt-4">
+                      <button
+                        onClick={() => openEditModal(result)}
+                        className="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => confirmDelete(result._id, result.courseName)}
+                        className="text-sm bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
                 );
