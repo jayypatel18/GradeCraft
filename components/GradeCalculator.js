@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { useToast } from './ToastProvider';
 
 
 const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
   const { data: session } = useSession();
+  const { addToast } = useToast();
   const [courseName, setCourseName] = useState('');
   const [ct, setCt] = useState('');
   const [se, setSe] = useState('');
@@ -55,13 +57,15 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
 
     setResults(validGradeResults);
     onCalculate(validGradeResults);
+    addToast('Grades calculated successfully!', 'info');
   };
 
   const handleSave = async (resultData) => {
     try {
       // Validate required fields
       if (!resultData.courseName || resultData.courseName.trim() === '') {
-        throw new Error('Course name is required');
+        addToast('Course name is required', 'error');
+        return;
       }
 
       // Create a clean, serializable object with proper number conversions
@@ -84,20 +88,29 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
         credentials: 'include',
       });
 
-      // Rest of your code remains the same
       if (!res.ok) {
         throw new Error(await res.text());
       }
 
       const data = await res.json();
       if (data.success) {
-        // Replace fetchResults() with onSave() if it's meant to refresh results
-        onSave(); // Call the prop function instead
-        alert('Results saved successfully!');
+        // Call the prop function to refresh results
+        onSave();
+        addToast(`${saveData.courseName} saved successfully!`, 'success');
+        
+        // Clear form fields after successful save
+        setCourseName('');
+        setCt('');
+        setSe('');
+        setAs('');
+        setRu('');
+        setLpw('');
+        setHasLPW(false);
+        setResults(null);
       }
     } catch (error) {
       console.error('Save error:', error);
-      alert(`Failed to save: ${error.message}`);
+      addToast(`Failed to save: ${error.message}`, 'error');
     }
   };
 
@@ -110,6 +123,8 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
     setRu(result.ru?.toString() || '');
     setLpw(result.lpw?.toString() || '');
     setHasLPW(result.hasLPW);
+    
+    addToast(`Loaded ${result.courseName}`, 'info');
   };
 
   return (

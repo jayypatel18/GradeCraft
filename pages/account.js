@@ -2,12 +2,17 @@ import { useSession, signOut } from 'next-auth/react';
 import Navbar from '../components/Navbar';
 import { useState, useEffect } from 'react';
 import EditResultModal from '../components/EditResultModal';
+import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
+import { useToast } from '../components/ToastProvider';
 
 export default function Account() {
   const { data: session } = useSession();
   const [savedResults, setSavedResults] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentResult, setCurrentResult] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const { addToast } = useToast();
   
   const gradeDisplayMapping = {
     APlus: 'A+',
@@ -46,13 +51,36 @@ export default function Account() {
     }
   };
 
-  const deleteResult = async (id) => {
-    const res = await fetch(`/api/results/delete?id=${id}`, {
-      method: 'DELETE',
-    });
-    const data = await res.json();
-    if (data.success) {
-      fetchResults();
+  const confirmDelete = (id, courseName) => {
+    setItemToDelete({ id, courseName });
+    setIsDeleteModalOpen(true);
+  };
+  
+  const cancelDelete = () => {
+    setIsDeleteModalOpen(false);
+    setItemToDelete(null);
+  };
+
+  const deleteResult = async () => {
+    if (!itemToDelete) return;
+    
+    try {
+      const res = await fetch(`/api/results/delete?id=${itemToDelete.id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      
+      if (data.success) {
+        fetchResults();
+        setIsDeleteModalOpen(false);
+        setItemToDelete(null);
+        addToast(`Course "${itemToDelete.courseName}" deleted successfully!`, 'success');
+      } else {
+        addToast(`Failed to delete: ${data.message || 'Unknown error'}`, 'error');
+      }
+    } catch (error) {
+      console.error('Error deleting result:', error);
+      addToast(`Error deleting result: ${error.message}`, 'error');
     }
   };
   
@@ -81,12 +109,13 @@ export default function Account() {
       if (data.success) {
         fetchResults();
         closeEditModal();
+        addToast(`Course "${formData.courseName}" updated successfully!`, 'success');
       } else {
-        alert('Failed to update: ' + data.message);
+        addToast(`Failed to update: ${data.message}`, 'error');
       }
     } catch (error) {
       console.error('Update error:', error);
-      alert('Failed to update: ' + error.message);
+      addToast(`Failed to update: ${error.message}`, 'error');
     }
   };
   
@@ -198,7 +227,7 @@ export default function Account() {
                           Edit
                         </button>
                         <button
-                          onClick={() => deleteResult(result._id)}
+                          onClick={() => confirmDelete(result._id, result.courseName)}
                           className="text-red-600 hover:text-red-800 text-sm sm:text-base"
                         >
                           Delete
@@ -219,6 +248,14 @@ export default function Account() {
         isOpen={isEditModalOpen}
         onClose={closeEditModal}
         onSave={handleEditSave}
+      />
+      
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={cancelDelete}
+        onConfirm={deleteResult}
+        itemName={itemToDelete ? `course "${itemToDelete.courseName}"` : 'this course'}
       />
     </div>
   );
