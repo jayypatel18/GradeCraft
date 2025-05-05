@@ -145,7 +145,7 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4"></div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
         <div>
-          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">CT Marks</label>
+          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">ClassTest Marks (Out of 20)</label>
           <input
             type="number"
             value={ct}
@@ -155,7 +155,7 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
           />
         </div>
         <div>
-          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">SE Marks</label>
+          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">SessionalExam Marks (Out of 50)</label>
           <input
             type="number"
             value={se}
@@ -168,7 +168,7 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
         <div>
-          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">AS Marks</label>
+          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">Assignment Marks (Out of 20)</label>
           <input
             type="number"
             value={as}
@@ -192,7 +192,7 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       {hasLPW && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
           <div>
-            <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">RU Marks</label>
+            <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">RU Marks (Out of 100)</label>
             <input
               type="number"
               value={ru}
@@ -202,7 +202,7 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
             />
           </div>
           <div>
-            <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">LPW Marks</label>
+            <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">LPW Marks (Out of 40)</label>
             <input
               type="number"
               value={lpw}
