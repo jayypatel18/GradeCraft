@@ -10,7 +10,7 @@
 !.yarn/releases
 !.yarn/versions
 .env.local
-pages/admin
+# pages/admin
 .vscode
 
 push.sh
