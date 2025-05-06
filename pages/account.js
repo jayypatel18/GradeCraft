@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import EditResultModal from '../components/EditResultModal';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
 import { useToast } from '../components/ToastProvider';
+import { formatDateToIST } from '../utils/dateFormatter';
 
 export default function Account() {
   const { data: session } = useSession();
@@ -191,7 +192,14 @@ export default function Account() {
                 return (
                   <div key={result._id} className="p-4 border rounded-lg bg-white shadow-sm hover:shadow-md transition">
                     <div>
-                      <h3 className="font-medium text-lg text-indigo-700 mb-2">{result.courseName}</h3>
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-medium text-lg text-indigo-700">{result.courseName}</h3>
+                        {result.createdAt && (
+                          <span className="text-xs text-gray-500">
+                            {formatDateToIST(result.createdAt)}
+                          </span>
+                        )}
+                      </div>
                       <p className="text-sm text-gray-600 mb-2">
                         <span className="font-semibold">CT:</span> {result.ct} | 
                         <span className="font-semibold"> SE:</span> {result.se} | 

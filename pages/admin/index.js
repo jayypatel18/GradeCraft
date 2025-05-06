@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import EditResultModal from '../../components/EditResultModal';
+import { formatDateToIST } from '../../utils/dateFormatter';
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
@@ -255,9 +256,16 @@ export default function AdminPage() {
         {selectedUser ? (
           <div>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold">
-                Courses for {selectedUser.name} ({selectedUser.email})
-              </h2>
+              <div>
+                <h2 className="text-xl font-bold">
+                  Courses for {selectedUser.name} ({selectedUser.email})
+                </h2>
+                {selectedUser.createdAt && (
+                  <p className="text-sm text-gray-500 mt-1">
+                    Registered: {formatDateToIST(selectedUser.createdAt)}
+                  </p>
+                )}
+              </div>
               <button 
                 onClick={handleBackToUsers}
                 className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
@@ -274,7 +282,14 @@ export default function AdminPage() {
                   return (
                     <div key={result._id} className="p-4 border rounded-lg bg-white shadow-sm hover:shadow-md transition">
                       <div>
-                        <h3 className="font-medium text-lg text-indigo-700 mb-2">{result.courseName}</h3>
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="font-medium text-lg text-indigo-700">{result.courseName}</h3>
+                          {result.createdAt && (
+                            <span className="text-xs text-gray-500">
+                              {formatDateToIST(result.createdAt)}
+                            </span>
+                          )}
+                        </div>
                         <p className="text-sm text-gray-600 mb-2">
                           <span className="font-semibold">CT:</span> {result.ct} | 
                           <span className="font-semibold"> SE:</span> {result.se} | 
@@ -346,9 +361,12 @@ export default function AdminPage() {
                 >
                   <div>
                     <h3 className="font-medium text-lg text-indigo-700 mb-2">{user.name}</h3>
-                    <p className="text-sm text-gray-600 mb-2">
-                      {user.email}
-                    </p>
+                    <p className="text-sm text-gray-600 mb-1">{user.email}</p>
+                    {user.createdAt && (
+                      <p className="text-xs text-gray-500 mb-2">
+                        Registered: {formatDateToIST(user.createdAt)}
+                      </p>
+                    )}
                     <div className="mt-3 p-2 bg-gray-50 rounded-lg">
                       {userCourseCount > 0 ? (
                         <p className="font-medium text-green-600">{userCourseCount} course(s) added</p>
@@ -370,7 +388,14 @@ export default function AdminPage() {
                 return (
                   <div key={result._id} className="p-4 border rounded-lg bg-white shadow-sm hover:shadow-md transition">
                     <div>
-                      <h3 className="font-medium text-lg text-indigo-700 mb-2">{result.courseName}</h3>
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-medium text-lg text-indigo-700">{result.courseName}</h3>
+                        {result.createdAt && (
+                          <span className="text-xs text-gray-500">
+                            {formatDateToIST(result.createdAt)}
+                          </span>
+                        )}
+                      </div>
                       <p className="text-sm font-medium text-indigo-600 mb-2">
                         <span
                           onClick={() => handleUserSelect(result.user)}
