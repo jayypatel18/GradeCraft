@@ -145,36 +145,36 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4"></div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
         <div>
-          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">ClassTest Marks (Out of 20)</label>
+          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">Class Test Marks</label>
           <input
             type="number"
             value={ct}
             onChange={(e) => setCt(e.target.value)}
             className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
-            placeholder="Enter CT marks"
+            placeholder="Out of 20"
           />
         </div>
         <div>
-          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">SessionalExam Marks (Out of 50)</label>
+          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">Sessional Exam Marks</label>
           <input
             type="number"
             value={se}
             onChange={(e) => setSe(e.target.value)}
             className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
-            placeholder="Enter SE marks"
+            placeholder="Out of 50"
           />
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
         <div>
-          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">Assignment Marks (Out of 20)</label>
+          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">Assignment Marks</label>
           <input
             type="number"
             value={as}
             onChange={(e) => setAs(e.target.value)}
             className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
-            placeholder="Enter AS marks"
+            placeholder="Out of 20"
           />
         </div>
         <div className="flex items-center">
@@ -192,23 +192,23 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       {hasLPW && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
           <div>
-            <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">RU Marks (Out of 100)</label>
+            <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">RU Marks</label>
             <input
               type="number"
               value={ru}
               onChange={(e) => setRu(e.target.value)}
               className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
-              placeholder="Enter RU marks"
+              placeholder="Out of 100"
             />
           </div>
           <div>
-            <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">LPW Marks (Out of 40)</label>
+            <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">LPW Marks</label>
             <input
               type="number"
               value={lpw}
               onChange={(e) => setLpw(e.target.value)}
               className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm sm:text-base"
-              placeholder="Enter LPW marks"
+              placeholder="Out of 40"
             />
           </div>
         </div>
