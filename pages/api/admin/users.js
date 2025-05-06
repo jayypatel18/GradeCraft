@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   try {
     // Get all users
     const users = await User.find({})
-      .select('name email isAdmin')
+      .select('name email isAdmin createdAt')
       .sort({ name: 1 });
     
     res.status(200).json({ success: true, users });
