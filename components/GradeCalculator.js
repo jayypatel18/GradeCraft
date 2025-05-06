@@ -96,7 +96,7 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       if (data.success) {
         // Call the prop function to refresh results
         onSave();
-        addToast(`${saveData.courseName} saved successfully!`, 'success');
+        addToast(`${saveData.courseName} is calculated and saved successfully!`, 'success');
         
         // Clear form fields after successful save
         setCourseName('');
@@ -106,7 +106,7 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
         setRu('');
         setLpw('');
         setHasLPW(false);
-        setResults(null);
+        // setResults(null);
       }
     } catch (error) {
       console.error('Save error:', error);
@@ -215,15 +215,11 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
       )}
 
       <div className="flex flex-wrap gap-3 sm:gap-4 mb-5 sm:mb-6">
-        <button
-          onClick={calculateGrades}
-          className="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-200 text-sm sm:text-base"
-        >
-          Calculate
-        </button>
         {isLoggedIn && (
           <button
-            onClick={() => handleSave({
+            onClick={() => 
+              {calculateGrades();
+              handleSave({
               courseName,
               ct,
               se,
@@ -231,16 +227,32 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
               ru,
               lpw,
               hasLPW
-            })}
+            })}}
             className="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 text-sm sm:text-base"
-            disabled={!results || !courseName}
+            disabled={!courseName}
           >
-            Save Results
+            Calculate & Save
           </button>
         )}
       </div>
 
-      {isLoggedIn && savedResults.length > 0 && (
+      {results && (
+        <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="text-base sm:text-lg font-semibold mb-2 text-gray-700">Required Final Exam Marks</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-1 gap-2 sm:gap-3">
+            {Object.entries(results).map(([grade, value]) => (
+              <div className="flex justify-between items-center" key={grade}>
+                <span className={`font-medium text-sm sm:text-base ${getGradeColor(grade)}`}>
+                  For {gradeDisplayMapping[grade]} Grade:
+                </span>
+                <span className="text-sm sm:text-base">{value.toFixed(2)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+{isLoggedIn && savedResults.length > 0 && (
         <div className="mb-5 sm:mb-6">
           <h3 className="text-base sm:text-lg font-semibold mb-2 text-gray-700">Saved Results</h3>
           <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -255,22 +267,6 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
                   CT: {result.ct}, SE: {result.se}, AS: {result.as}
                   {result.hasLPW && `, RU: ${result.ru}, LPW: ${result.lpw}`}
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {results && (
-        <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
-          <h3 className="text-base sm:text-lg font-semibold mb-2 text-gray-700">Required Final Exam Marks</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-1 gap-2 sm:gap-3">
-            {Object.entries(results).map(([grade, value]) => (
-              <div className="flex justify-between items-center" key={grade}>
-                <span className={`font-medium text-sm sm:text-base ${getGradeColor(grade)}`}>
-                  For {gradeDisplayMapping[grade]} Grade:
-                </span>
-                <span className="text-sm sm:text-base">{value.toFixed(2)}</span>
               </div>
             ))}
           </div>

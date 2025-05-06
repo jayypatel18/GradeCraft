@@ -18,9 +18,18 @@ export default async function handler(req, res) {
   try {
     const { courseName, ct, se, as, ru, lpw, hasLPW } = req.body;
     
+    // Validate that courseName exists before trying to use trim()
+    if (!courseName) {
+      return res.status(400).json({
+        success: false,
+        error: 'Course name is required',
+        message: 'Course name is required'
+      });
+    }
+    
     const result = await Result.create({
         user: session.user.id,
-        courseName: courseName.trim(), // Use the destructured variable
+        courseName: courseName.trim(), // Now safe to use trim() since we've validated courseName
         ct: parseFloat(ct),
         se: parseFloat(se),
         as: parseFloat(as),
