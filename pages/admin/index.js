@@ -53,7 +53,7 @@ export default function AdminPage() {
     if (result.hasLPW) {
       ans = ((ctVal + (seVal * 1.2) + asVal) * 0.3) + (((ruVal * 0.6) + lpwVal) * 0.3);
     } else {
-      ans = ((ctVal + (seVal * 1.2) + asVal) * 0.6);
+      ans = ((ctVal + (seVal * 0.8) + (asVal * 1.5)) * 0.6);
     }
 
     const gradeResults = {
