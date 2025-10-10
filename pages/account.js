@@ -204,13 +204,15 @@ export default function Account() {
                         <span className="font-semibold">CT:</span> {result.ct} | 
                         <span className="font-semibold"> SE:</span> {result.se} | 
                         <span className="font-semibold"> AS:</span> {result.as}
-                        {result.hasLPW && (
-                          <>
-                            <br />
-                            <span className="font-semibold">RU:</span> {result.ru} | 
-                            <span className="font-semibold"> LPW:</span> {result.lpw}
-                          </>
-                        )}
+                        <span className="font-semibold">RU:</span> {result.ru} | 
+                        <span className="font-semibold"> LPW:</span> {result.lpw}
+                        // {result.hasLPW && (
+                        //   <>
+                        //     <br />
+                        //     <span className="font-semibold">RU:</span> {result.ru} | 
+                        //     <span className="font-semibold"> LPW:</span> {result.lpw}
+                        //   </>
+                        // )}
                       </p>
                     </div>
                     
