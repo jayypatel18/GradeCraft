@@ -24,13 +24,15 @@ const resultSchema = new mongoose.Schema({
   },
   ru: {
     type: Number,
+      required: true,
   },
   lpw: {
     type: Number,
+    required: true,
   },
   hasLPW: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   createdAt: {
     type: Date,
