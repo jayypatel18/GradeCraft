@@ -177,19 +177,9 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
             placeholder="Out of 20"
           />
         </div>
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="hasLPW"
-            checked={hasLPW}
-            onChange={(e) => setHasLPW(e.target.checked)}
-            className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-indigo-600"
-          />
-          <label htmlFor="hasLPW" className="text-gray-700 text-sm sm:text-base">Has LPW Component</label>
-        </div>
+        
       </div>
 
-      {hasLPW && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
           <div>
             <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">RU Marks</label>
@@ -212,7 +202,6 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
             />
           </div>
         </div>
-      )}
 
       <div className="flex flex-wrap gap-3 sm:gap-4 mb-5 sm:mb-6">
         {isLoggedIn && (
