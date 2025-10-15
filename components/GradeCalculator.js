@@ -12,7 +12,7 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
   const [as, setAs] = useState('');
   const [ru, setRu] = useState('');
   const [lpw, setLpw] = useState('');
-  const [hasLPW, setHasLPW] = useState(false);
+  const [hasLPW, setHasLPW] = useState(true);
   const [results, setResults] = useState(null);
   const [selectedResult, setSelectedResult] = useState(null);
 
