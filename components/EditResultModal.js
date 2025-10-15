@@ -8,7 +8,7 @@ const EditResultModal = ({ result, isOpen, onClose, onSave }) => {
     as: '',
     ru: '',
     lpw: '',
-    hasLPW: false,
+    hasLPW: true,
   });
   
   useEffect(() => {
@@ -104,20 +104,9 @@ const EditResultModal = ({ result, isOpen, onClose, onSave }) => {
                 required
               />
             </div>
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="hasLPW"
-                name="hasLPW"
-                checked={formData.hasLPW}
-                onChange={handleChange}
-                className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-indigo-600"
-              />
-              <label htmlFor="hasLPW" className="text-gray-700 text-sm sm:text-base">Has LPW Component</label>
-            </div>
+            
           </div>
           
-          {formData.hasLPW && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
               <div>
                 <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">RU Marks</label>
