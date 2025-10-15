@@ -18,8 +18,7 @@ const SavedResults = ({ results, onLoad, onDelete }) => {
               <div>
                 <h4 className="font-medium text-gray-900">{result.courseName}</h4>
                 <p className="text-sm text-gray-500 mt-1">
-                  CT: {result.ct} | SE: {result.se} | AS: {result.as}
-                  {result.hasLPW && ` | RU: ${result.ru} | LPW: ${result.lpw}`}
+                  CT: {result.ct} | SE: {result.se} | AS: {result.as} | RU: ${result.ru} | LPW: ${result.lpw}
                 </p>
               </div>
               <div className="flex space-x-2">
