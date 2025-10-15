@@ -41,8 +41,8 @@ export default async function handler(req, res) {
         ct: parseFloat(ct),
         se: parseFloat(se),
         as: parseFloat(as),
-        ru: ru ? parseFloat(ru) : undefined,
-        lpw: lpw ? parseFloat(lpw) : undefined,
+        ru: parseFloat(ru),
+        lpw: parseFloat(lpw),
         hasLPW: Boolean(hasLPW)
       },
       { new: true, runValidators: true }
