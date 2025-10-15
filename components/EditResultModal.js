@@ -129,7 +129,6 @@ const EditResultModal = ({ result, isOpen, onClose, onSave }) => {
                 />
               </div>
             </div>
-          )}
           
           <div className="flex flex-col sm:flex-row sm:justify-end space-y-2 sm:space-y-0 sm:space-x-3">
             <button
