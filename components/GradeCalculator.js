@@ -74,8 +74,8 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
         ct: parseFloat(resultData.ct) || 0, // Use 0 instead of NaN
         se: parseFloat(resultData.se) || 0,
         as: parseFloat(resultData.as) || 0,
-        ru: resultData.ru ? parseFloat(resultData.ru) || 0 : null,
-        lpw: resultData.lpw ? parseFloat(resultData.lpw) || 0 : null,
+        ru: parseFloat(resultData.ru) || 0,
+        lpw: parseFloat(resultData.lpw) || 0,
         hasLPW: Boolean(resultData.hasLPW),
       };
 
@@ -105,7 +105,7 @@ const GradeCalculator = ({ onCalculate, onSave, isLoggedIn, savedResults }) => {
         setAs('');
         setRu('');
         setLpw('');
-        setHasLPW(false);
+        setHasLPW(true);
         // setResults(null);
       }
     } catch (error) {
